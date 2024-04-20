@@ -1,0 +1,84 @@
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星座查询</title>
+</head>
+<body>
+
+<h1>星座查询</h1>
+
+<form id="zodiacForm">
+  <label for="birthdate">请输入您的出生日期（YYYY-MM-DD）：</label><br>
+  <input type="text" id="birthdate" name="birthdate"><br><br>
+  <button type="submit">查询</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+document.getElementById("zodiacForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // 阻止表单默认提交行为
+  
+  var birthdate = document.getElementById("birthdate").value;
+  var resultContainer = document.getElementById("result");
+  
+  // 函数：获取星座
+  function getZodiacSign(birthdate) {
+    // 将输入的日期字符串转换为日期对象
+    var dateOfBirth = new Date(birthdate);
+
+    // 检查日期是否有效
+    if (isNaN(dateOfBirth.getTime())) {
+        return "请输入有效的日期。";
+    }
+
+    // 提取月份和日期
+    var month = dateOfBirth.getMonth() + 1; // 月份从0开始，所以需要加1
+    var day = dateOfBirth.getDate();
+
+    // 定义星座边界日期
+    var zodiacSigns = [
+        { sign: "摩羯座", start: "01-01", end: "01-19" },
+        { sign: "水瓶座", start: "01-20", end: "02-18" },
+        { sign: "双鱼座", start: "02-19", end: "03-20" },
+        { sign: "白羊座", start: "03-21", end: "04-19" },
+        { sign: "金牛座", start: "04-20", end: "05-20" },
+        { sign: "双子座", start: "05-21", end: "06-20" },
+        { sign: "巨蟹座", start: "06-21", end: "07-22" },
+        { sign: "狮子座", start: "07-23", end: "08-22" },
+        { sign: "处女座", start: "08-23", end: "09-22" },
+        { sign: "天秤座", start: "09-23", end: "10-22" },
+        { sign: "天蝎座", start: "10-23", end: "11-21" },
+        { sign: "射手座", start: "11-22", end: "12-21" },
+        { sign: "摩羯座", start: "12-22", end: "12-31" }
+    ];
+
+    // 查找匹配的星座
+    for (var i = 0; i < zodiacSigns.length; i++) {
+        var sign = zodiacSigns[i];
+        var start = new Date("2000-" + sign.start);
+        var end = new Date("2000-" + sign.end);
+        if ((dateOfBirth >= start && dateOfBirth <= end) ||
+            (month == 1 && day <= 19 && sign.sign === "摩羯座") ||
+            (month == 12 && day >= 22 && sign.sign === "摩羯座")) {
+            return sign.sign;
+        }
+    }
+
+    return "无法确定星座。";
+  }
+
+  var zodiac = getZodiacSign(birthdate);
+  resultContainer.textContent = "您的星座是：" + zodiac;
+});
+</script>
+
+</body>
+</html>
+```
+
